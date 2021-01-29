@@ -32,7 +32,6 @@ class Web_driver:
 class Web_driver:
     def __init__(self, chrome_options=None):
         path = '/home/herry/chromedriver_linux64/chromedriver'
-        chrome_options = None
         if chrome_options:
             chrome_options = Options()
             chrome_options.add_argument("--kiosk")
@@ -40,15 +39,16 @@ class Web_driver:
         self.driver = webdriver.Chrome(path, chrome_options=chrome_options)
         url = f'https://www.google.com.tw/maps/@23.546162,120.6402133,8z?hl=zh-TW'
         self.driver.get(url)
-
+        
     def search_place(self, place):
         def parser_latlng(url):
             l_latlng = url.split('@')[1].split(',')
             return {'lat': l_latlng[0], 'lng': l_latlng[1]}
-
-        self.driver.refresh()
+        
         searchbox = self.driver.find_element_by_id("searchboxinput")
-        searchbox.send_keys(place)
+        searchbox.clear()
+        time.sleep(2)
+        searchbox.send_keys(place)  
         searchbox.send_keys(Keys.ENTER)
         time.sleep(5)
         return parser_latlng(self.driver.current_url)
