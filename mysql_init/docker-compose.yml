@@ -1,0 +1,15 @@
+version: '3'
+services:
+  mysql:
+    container_name: mysql
+    build: ./mysql
+    volumes:
+      - ./data/mysql/data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d/
+      - ./mysql/sql:/opt/sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=test1234
+    ports:
+      - "33060:3306"
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
