@@ -1,0 +1,61 @@
+version: '3.1'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: my-redis
+    ports:
+      - 6379:6379
+    networks:
+      - mynet
+    restart: always
+
+  celery_bean:
+    container_name: celery_bean
+    build:
+        context: .
+        dockerfile: dockerfile
+    depends_on:
+        - redis
+    networks:
+        - mynet
+    environment:
+        BROKER_URL: redis://my-redis:6379/0
+        BACKEND_URL: redis://my-redis:6379/0
+    command: /bin/bash -c "celery -A tasks beat --loglevel=info"
+    restart: always
+
+  celery_worker:
+    container_name: celery_worker
+    build:
+        context: .
+        dockerfile: dockerfile
+    depends_on:
+        - redis
+    networks:
+        - mynet
+    environment:
+        BROKER_URL: redis://my-redis:6379/0
+        BACKEND_URL: redis://my-redis:6379/0
+    command: /bin/bash -c "celery -A tasks worker --loglevel=info"
+    restart: always
+
+  celery_flower:
+    container_name: celery_flower
+    build:
+        context: .
+        dockerfile: dockerfile
+    depends_on:
+        - redis
+    ports:
+      - 5555:5555
+    networks:
+        - mynet
+    environment:
+        BROKER_URL: redis://my-redis:6379/0
+        BACKEND_URL: redis://my-redis:6379/0
+    command: /bin/bash -c "celery -A tasks flower"
+    restart: always
+
+networks:
+  mynet:

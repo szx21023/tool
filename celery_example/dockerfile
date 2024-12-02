@@ -1,0 +1,15 @@
+FROM python:3.11.0
+
+ENV BROKER_URL="redis://my-redis:6379/0"
+ENV BACKEND_URL="redis://my-redis:6379/0"
+ENV PROJECT_PATH /home/fastapi
+
+RUN mkdir -p ${PROJECT_PATH}
+WORKDIR ${PROJECT_PATH}
+COPY ./requirements.txt ${PROJECT_PATH}
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
+COPY . ${PROJECT_PATH}
+
+EXPOSE 8000
+CMD ["celery", "-A", "tasks", "beat", "--loglevel=info"]
