@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket 測試</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+</head>
+<body>
+    <h2>Flask WebSocket 測試</h2>
+    <input id="messageInput" type="text" placeholder="輸入訊息">
+    <button onclick="sendMessage()">發送</button>
+    <ul id="messages"></ul>
+
+    <script>
+        const socket = io("http://localhost:5000");
+
+        socket.on("connect", () => {
+            console.log("已連接到 WebSocket 伺服器");
+        });
+
+        socket.on("message", (msg) => {
+            console.log("收到伺服器訊息:", msg);
+            const li = document.createElement("li");
+            li.textContent = msg;
+            document.getElementById("messages").appendChild(li);
+        });
+
+        function sendMessage() {
+            const message = document.getElementById("messageInput").value;
+            socket.send(message);
+        }
+    </script>
+</body>
+</html>
+
