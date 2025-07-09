@@ -1,0 +1,17 @@
+# 使用官方 Python 映像檔
+FROM python:3.10-slim
+
+# 設定工作目錄
+WORKDIR /app
+
+# 複製需求檔與程式碼
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app.py .
+
+# 開放 Flask 預設埠口
+EXPOSE 5000
+
+# 啟動 Flask
+CMD ["python", "app.py"]
