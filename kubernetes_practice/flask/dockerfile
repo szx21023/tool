@@ -14,4 +14,4 @@ COPY app.py .
 EXPOSE 5000
 
 # 啟動 Flask
-CMD ["python", "app.py"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
