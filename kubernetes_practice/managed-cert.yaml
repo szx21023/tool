@@ -5,4 +5,4 @@ metadata:
   name: flask-cert
 spec:
   domains:
-    - api.example.com  # 改成你的網域
+    - gcp.herrytest.com  # 改成你的網域

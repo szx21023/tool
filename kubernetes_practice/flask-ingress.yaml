@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: gce
   rules:
-  - host: api.example.com
+  - host: gcp.herrytest.com
     http:
       paths:
       - path: /
