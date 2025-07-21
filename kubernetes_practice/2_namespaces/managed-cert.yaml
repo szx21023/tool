@@ -1,0 +1,8 @@
+# managed-cert.yaml
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: flask-cert
+spec:
+  domains:
+    - gcp.herrytest.com  # 改成你的網域

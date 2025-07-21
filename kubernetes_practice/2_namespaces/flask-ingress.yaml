@@ -1,0 +1,21 @@
+# flask-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"  # 使用 GCP L7 Ingress Controller
+    networking.gke.io/managed-certificates: flask-cert
+spec:
+  ingressClassName: gce
+  rules:
+  - host: gcp.herrytest.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flask-service
+            port:
+              number: 5000
